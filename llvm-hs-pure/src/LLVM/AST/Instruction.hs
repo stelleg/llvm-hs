@@ -81,6 +81,22 @@ data Terminator
       defaultUnwindDest :: Maybe Name,
       metadata' :: InstructionMetadata
     }
+  | Detach {
+      syncVar :: Operand,
+      detached :: Name,
+      reattach :: Name,
+      metadata' :: InstructionMetadata
+    }
+  | Reattach {
+      syncVar :: Operand,
+      reattach :: Name,
+      metadata' :: InstructionMetadata
+    }
+  | Sync {
+      syncVar :: Operand,
+      cont :: Name,
+      metadata' :: InstructionMetadata
+    }
   deriving (Eq, Read, Show, Typeable, Data, Generic)
 
 -- | <http://llvm.org/docs/LangRef.html#fast-math-flags>

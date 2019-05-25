@@ -239,6 +239,23 @@ fcmp pred a b = emitInstr i1 $ FCmp pred a b []
 br :: MonadIRBuilder m => Name -> m ()
 br val = emitTerm (Br val [])
 
+-- | Detach
+-- Emit a @detach label <sv>@ <dest>@ <dest>@ instruction
+detach :: MonadIRBuilder m => Operand -> Name -> Name -> m ()
+detach sv det rea = emitTerm (Detach sv det rea [])
+
+-- | Reattach
+-- Emit a @reattach label <sv>@ <dest>@ instruction
+-- See <https://llvm.org/docs/LangRef.html#br-instruction reference>.
+reattach :: MonadIRBuilder m => Operand -> Name -> m ()
+reattach sv rea = emitTerm (Reattach sv rea [])
+
+-- | Sync
+-- Emit a @sync label <sv>@ <dest>@ instruction
+-- See <https://llvm.org/docs/LangRef.html#br-instruction reference>.
+sync :: MonadIRBuilder m => Operand -> Name -> m ()
+sync sv rea = emitTerm (Sync sv rea [])
+
 -- | See <https://llvm.org/docs/LangRef.html#phi-instruction reference>.
 phi :: MonadIRBuilder m => [(Operand, Name)] -> m Operand
 phi [] = emitInstr AST.void $ Phi AST.void [] []
