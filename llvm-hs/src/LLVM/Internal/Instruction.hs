@@ -91,6 +91,9 @@ instance DecodeM DecodeAST A.Terminator (Ptr FFI.Instruction) where
       [instrP|Ret|] -> do
         returnOperand' <- if nOps == 0 then return Nothing else Just <$> op 0
         return $ A.Ret { A.returnOperand = returnOperand', A.metadata' = md }
+      [instrP|Detach|] -> A.Detach <$> op 0 <*> successor 1 <*> successor 2 <*> pure []
+      [instrP|Reattach|] -> A.Reattach <$> op 0 <*> successor 1 <*> pure []
+      [instrP|Sync|] -> A.Sync <$> op 0 <*> successor 1 <*> pure []
       [instrP|Br|] -> do
         n <- liftIO $ FFI.getNumOperands (FFI.upCast i)
         case n of
