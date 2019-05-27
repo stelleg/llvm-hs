@@ -214,6 +214,19 @@ instance EncodeM EncodeAST A.Terminator (Ptr FFI.Instruction) where
         tb <- encodeM t
         fb <- encodeM f
         FFI.upCast <$> do liftIO $ FFI.buildCondBr builder cv tb fb
+      A.Detach { A.syncVar = s, A.detached = d, A.reattach = r } -> do
+        sv <- encodeM s 
+        db <- encodeM d 
+        rb <- encodeM r 
+        FFI.upCast <$> do liftIO $ FFI.buildDetach builder sv db rb
+      A.Reattach { A.syncVar = s, A.reattach = r } -> do
+        sv <- encodeM s
+        rb <- encodeM r
+        FFI.upCast <$> do liftIO $ FFI.buildReattach builder sv rb 
+      A.Sync { A.syncVar = s, A.cont = c } -> do
+        sv <- encodeM s
+        cb <- encodeM c
+        FFI.upCast <$> do liftIO $ FFI.buildSync builder sv cb
       A.Switch {
         A.operand0' = op0,
         A.defaultDest = dd,
