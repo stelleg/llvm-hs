@@ -103,6 +103,10 @@ data Pass
     }
   | ThreadSanitizer
   | BoundsChecking
+
+  -- Tapir passes
+  | LowerTapirToTarget
+  | LoopSpawning
   deriving (Eq, Ord, Read, Show, Typeable, Data, Generic)
 
 -- | Defaults for the 'LoopVectorize' pass
